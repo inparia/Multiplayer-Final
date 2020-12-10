@@ -15,7 +15,7 @@ public class SecondPlayer : MonoBehaviour
         }
         else
         {
-            gameObject.GetComponent<Text>().text = GameManager.Instance.secondPlayer;
+            gameObject.GetComponent<Text>().text = GameManager.Instance.totalPlayers[1].playerID;
         }
     }
 }

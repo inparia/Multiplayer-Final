@@ -15,7 +15,8 @@ public class FirstPlayer : MonoBehaviour
         }
         else
         {
-            gameObject.GetComponent<Text>().text = GameManager.Instance.firstPlayer;
+            Player tempP = GameManager.Instance.totalPlayers[0];
+            gameObject.GetComponent<Text>().text = tempP.playerID + " : " + tempP.totalNum;
         }
     }
 }
