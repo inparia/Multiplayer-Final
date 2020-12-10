@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
     #endregion
     public int firstNum = 0, secondNum = 0, thirdNum = 0, total = 0;
     public int playerID = 0;
+    public string firstPlayer, secondPlayer, thirdPlayer;
     // Update is called once per frame
 
 

@@ -52,6 +52,14 @@ public class NetworkClient : MonoBehaviour
                 break;
             case Commands.PLAYER_UPDATE:
             PlayerUpdateMsg puMsg = JsonUtility.FromJson<PlayerUpdateMsg>(recMsg);
+                if(puMsg.player.id != GameManager.Instance.playerID.ToString() && string.IsNullOrEmpty(GameManager.Instance.firstPlayer))
+                {
+                    GameManager.Instance.firstPlayer = puMsg.player.id;
+                }
+                if(puMsg.player.id != GameManager.Instance.playerID.ToString() && puMsg.player.id != GameManager.Instance.firstPlayer &&!string.IsNullOrEmpty(GameManager.Instance.firstPlayer) && string.IsNullOrEmpty(GameManager.Instance.secondPlayer))
+                {
+                    GameManager.Instance.secondPlayer = puMsg.player.id;
+                }
                 Debug.Log("PlayerID : " + puMsg.player.id + " : " + puMsg.player.totalNum);
             break;
             case Commands.SERVER_UPDATE:
