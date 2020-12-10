@@ -58,6 +58,9 @@ public class NetworkServer : MonoBehaviour
             case Commands.PLAYER_UPDATE:
             PlayerUpdateMsg puMsg = JsonUtility.FromJson<PlayerUpdateMsg>(recMsg);
                 PlayerUpdateMsg m = new PlayerUpdateMsg();
+                m.player.firstNum = puMsg.player.firstNum;
+                m.player.secondNum = puMsg.player.secondNum;
+                m.player.thirdNum = puMsg.player.thirdNum;
                 m.player.totalNum = puMsg.player.totalNum;
                 m.player.id = puMsg.player.id;
                 foreach(NetworkConnection tempC in m_Connections)

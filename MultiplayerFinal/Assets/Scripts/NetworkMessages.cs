@@ -60,12 +60,10 @@ namespace NetworkObjects
     [System.Serializable]
     public class NetworkPlayer : NetworkObject{
         public int totalNum;
-
-        public Color cubeColor;
-        public Vector3 cubPos;
+        public int firstNum, secondNum, thirdNum;
 
         public NetworkPlayer(){
-            cubeColor = new Color();
+
         }
     }
 }

@@ -117,6 +117,9 @@ public class NetworkClient : MonoBehaviour
             PlayerUpdateMsg m = new PlayerUpdateMsg();
             m.player.totalNum = GameManager.Instance.total;
             m.player.id = GameManager.Instance.playerID.ToString();
+            m.player.firstNum = GameManager.Instance.firstNum;
+            m.player.secondNum = GameManager.Instance.secondNum;
+            m.player.thirdNum = GameManager.Instance.thirdNum;
             SendToServer(JsonUtility.ToJson(m));
         }
     }
