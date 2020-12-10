@@ -37,6 +37,8 @@ public class GameManager : MonoBehaviour
     public int playerID = 0;
     public List<Player> totalPlayers = new List<Player>();
     public string firstPlayer, secondPlayer, thirdPlayer;
+    public List<int> roomNumbers;
+    public int gameRoomID = 0;
     // Update is called once per frame
 
 

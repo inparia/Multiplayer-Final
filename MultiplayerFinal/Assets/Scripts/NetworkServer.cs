@@ -5,12 +5,14 @@ using Unity.Networking.Transport;
 using NetworkMessages;
 using System;
 using System.Text;
+using System.Collections.Generic;
 
 public class NetworkServer : MonoBehaviour
 {
     public NetworkDriver m_Driver;
     public ushort serverPort;
     private NativeList<NetworkConnection> m_Connections;
+    public List<int> matchRooms = new List<int>(new int[] { 1111, 2222, 3333, 4444 });
     void Start ()
     {
         m_Driver = NetworkDriver.Create();
@@ -22,6 +24,7 @@ public class NetworkServer : MonoBehaviour
             m_Driver.Listen();
 
         m_Connections = new NativeList<NetworkConnection>(16, Allocator.Persistent);
+
     }
 
     void SendToClient(string message, NetworkConnection c){
@@ -62,6 +65,8 @@ public class NetworkServer : MonoBehaviour
                 m.player.secondNum = puMsg.player.secondNum;
                 m.player.thirdNum = puMsg.player.thirdNum;
                 m.player.totalNum = puMsg.player.totalNum;
+                m.player.roomNumber = puMsg.player.roomNumber;
+                m.player.rooms = matchRooms;
                 m.player.id = puMsg.player.id;
                 foreach(NetworkConnection tempC in m_Connections)
                 {

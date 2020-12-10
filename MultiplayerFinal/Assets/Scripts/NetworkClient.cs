@@ -6,8 +6,11 @@ using NetworkObjects;
 using System;
 using System.Text;
 
+
 public class NetworkClient : MonoBehaviour
 {
+    
+
     public NetworkDriver m_Driver;
     public NetworkConnection m_Connection;
     public string serverIP;
@@ -52,33 +55,34 @@ public class NetworkClient : MonoBehaviour
                 break;
             case Commands.PLAYER_UPDATE:
             PlayerUpdateMsg puMsg = JsonUtility.FromJson<PlayerUpdateMsg>(recMsg);
-                if(puMsg.player.id != GameManager.Instance.playerID.ToString() && string.IsNullOrEmpty(GameManager.Instance.firstPlayer))
-                {
-                    GameManager.Instance.firstPlayer = puMsg.player.id;
-                    GameManager.Instance.totalPlayers.Add(new Player(puMsg.player.id, puMsg.player.firstNum, puMsg.player.secondNum, puMsg.player.thirdNum, puMsg.player.totalNum));
+                    if (puMsg.player.id != GameManager.Instance.playerID.ToString() && string.IsNullOrEmpty(GameManager.Instance.firstPlayer))
+                    {
+                        GameManager.Instance.firstPlayer = puMsg.player.id;
+                        GameManager.Instance.totalPlayers.Add(new Player(puMsg.player.id, puMsg.player.firstNum, puMsg.player.secondNum, puMsg.player.thirdNum, puMsg.player.totalNum));
 
-                }
-                if (puMsg.player.id != GameManager.Instance.playerID.ToString() && puMsg.player.id != GameManager.Instance.firstPlayer &&!string.IsNullOrEmpty(GameManager.Instance.firstPlayer) && string.IsNullOrEmpty(GameManager.Instance.secondPlayer))
-                {
-                    GameManager.Instance.totalPlayers.Add(new Player(puMsg.player.id, puMsg.player.firstNum, puMsg.player.secondNum, puMsg.player.thirdNum, puMsg.player.totalNum));
-                }
+                    }
+                    if (puMsg.player.id != GameManager.Instance.playerID.ToString() && puMsg.player.id != GameManager.Instance.firstPlayer && !string.IsNullOrEmpty(GameManager.Instance.firstPlayer) && string.IsNullOrEmpty(GameManager.Instance.secondPlayer))
+                    {
+                        GameManager.Instance.secondPlayer = puMsg.player.id;
+                        GameManager.Instance.totalPlayers.Add(new Player(puMsg.player.id, puMsg.player.firstNum, puMsg.player.secondNum, puMsg.player.thirdNum, puMsg.player.totalNum));
+                    }
 
-                if(GameManager.Instance.totalPlayers.Count > 0)
-                {
-                    UpdatePlayerInfos(GameManager.Instance.totalPlayers[0], puMsg);
-                }
+                    if (GameManager.Instance.totalPlayers.Count > 0)
+                    {
+                        UpdatePlayerInfos(GameManager.Instance.totalPlayers[0], puMsg);
+                    }
 
-                if (GameManager.Instance.totalPlayers.Count > 1)
-                {
-                    UpdatePlayerInfos(GameManager.Instance.totalPlayers[1], puMsg);
-                }
+                    if (GameManager.Instance.totalPlayers.Count > 1)
+                    {
+                        UpdatePlayerInfos(GameManager.Instance.totalPlayers[1], puMsg);
+                    }
 
-                if (GameManager.Instance.totalPlayers.Count > 2)
-                {
-                    UpdatePlayerInfos(GameManager.Instance.totalPlayers[2], puMsg);
-                }
-
-                Debug.Log("PlayerID : " + puMsg.player.id + " : " + puMsg.player.totalNum);
+                    if (GameManager.Instance.totalPlayers.Count > 2)
+                    {
+                        UpdatePlayerInfos(GameManager.Instance.totalPlayers[2], puMsg);
+                    }
+                GameManager.Instance.roomNumbers = puMsg.player.rooms;
+                //Debug.Log("PlayerID : " + puMsg.player.id + " : " + puMsg.player.totalNum);
             break;
             case Commands.SERVER_UPDATE:
             ServerUpdateMsg suMsg = JsonUtility.FromJson<ServerUpdateMsg>(recMsg);
@@ -146,6 +150,7 @@ public class NetworkClient : MonoBehaviour
             m.player.firstNum = GameManager.Instance.firstNum;
             m.player.secondNum = GameManager.Instance.secondNum;
             m.player.thirdNum = GameManager.Instance.thirdNum;
+            m.player.roomNumber = GameManager.Instance.gameRoomID;
             SendToServer(JsonUtility.ToJson(m));
         }
     }

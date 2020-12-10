@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ClientScene.unity
     guid: 76fa63281267a48fda30560bf4032021
+  - enabled: 1
+    path: Assets/Scenes/MatchroomScene.unity
+    guid: 76658302a6766664baadccd249c8b0ea
   m_configObjects: {}

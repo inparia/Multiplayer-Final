@@ -55,6 +55,8 @@ namespace NetworkObjects
 {
     [System.Serializable]
     public class NetworkObject{
+        public List<int> rooms;
+        public int roomNumber;
         public string id;
     }
     [System.Serializable]
