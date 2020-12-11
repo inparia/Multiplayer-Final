@@ -12,6 +12,7 @@ public class NetworkServer : MonoBehaviour
     public NetworkDriver m_Driver;
     public ushort serverPort;
     private NativeList<NetworkConnection> m_Connections;
+    public List<int> matchedRooms = new List<int>();
     void Start ()
     {
         m_Driver = NetworkDriver.Create();
@@ -24,6 +25,10 @@ public class NetworkServer : MonoBehaviour
 
         m_Connections = new NativeList<NetworkConnection>(16, Allocator.Persistent);
 
+        matchedRooms.Add(1111);
+        matchedRooms.Add(2222);
+        matchedRooms.Add(3333);
+        matchedRooms.Add(4444);
     }
 
     void SendToClient(string message, NetworkConnection c){
@@ -64,6 +69,7 @@ public class NetworkServer : MonoBehaviour
                 m.player.thirdNum = puMsg.player.thirdNum;
                 m.player.totalNum = puMsg.player.totalNum;
                 m.player.id = puMsg.player.id;
+                m.player.matchedRooms = matchedRooms;
                 foreach (NetworkConnection tempC in m_Connections)
                 {
                     SendToClient(JsonUtility.ToJson(m), tempC);
