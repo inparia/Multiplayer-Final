@@ -12,7 +12,6 @@ public class NetworkServer : MonoBehaviour
     public NetworkDriver m_Driver;
     public ushort serverPort;
     private NativeList<NetworkConnection> m_Connections;
-    public List<int> matchRooms = new List<int>(new int[] { 1111, 2222, 3333, 4444 });
     void Start ()
     {
         m_Driver = NetworkDriver.Create();
@@ -42,7 +41,6 @@ public class NetworkServer : MonoBehaviour
     void OnConnect(NetworkConnection c){
         m_Connections.Add(c);
         Debug.Log("Accepted a connection");
-
         //// Example to send a handshake message:
 
     }
@@ -65,10 +63,8 @@ public class NetworkServer : MonoBehaviour
                 m.player.secondNum = puMsg.player.secondNum;
                 m.player.thirdNum = puMsg.player.thirdNum;
                 m.player.totalNum = puMsg.player.totalNum;
-                m.player.roomNumber = puMsg.player.roomNumber;
-                m.player.rooms = matchRooms;
                 m.player.id = puMsg.player.id;
-                foreach(NetworkConnection tempC in m_Connections)
+                foreach (NetworkConnection tempC in m_Connections)
                 {
                     SendToClient(JsonUtility.ToJson(m), tempC);
                 }
