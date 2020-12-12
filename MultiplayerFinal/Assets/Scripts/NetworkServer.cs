@@ -70,12 +70,12 @@ public class NetworkServer : MonoBehaviour
                 m.player.totalNum = puMsg.player.totalNum;
                 m.player.id = puMsg.player.id;
                 m.player.matchedRooms = matchedRooms;
+                m.player.roomID = puMsg.player.roomID;
                 foreach (NetworkConnection tempC in m_Connections)
                 {
                     SendToClient(JsonUtility.ToJson(m), tempC);
                 }
                 break;
-
             case Commands.SERVER_UPDATE:
             ServerUpdateMsg suMsg = JsonUtility.FromJson<ServerUpdateMsg>(recMsg);
             Debug.Log("Server update message received!");

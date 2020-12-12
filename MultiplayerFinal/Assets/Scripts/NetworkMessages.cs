@@ -6,6 +6,7 @@ namespace NetworkMessages
 {
     public enum Commands{
         PLAYER_UPDATE,
+        ROOM_UPDATE,
         SERVER_UPDATE,
         HANDSHAKE,
         PLAYER_INPUT
@@ -55,6 +56,7 @@ namespace NetworkObjects
 {
     [System.Serializable]
     public class NetworkObject{
+        public int roomID;
         public List<int> matchedRooms;
         public string id;
     }

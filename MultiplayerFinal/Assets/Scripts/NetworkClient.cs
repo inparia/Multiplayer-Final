@@ -55,6 +55,8 @@ public class NetworkClient : MonoBehaviour
                 break;
             case Commands.PLAYER_UPDATE:
             PlayerUpdateMsg puMsg = JsonUtility.FromJson<PlayerUpdateMsg>(recMsg);
+                if (GameManager.Instance.gameRoomID == puMsg.player.roomID && GameManager.Instance.gameRoomID != 0 && puMsg.player.roomID != 0)
+                {
                     if (puMsg.player.id != GameManager.Instance.playerID.ToString() && string.IsNullOrEmpty(GameManager.Instance.firstPlayer))
                     {
                         GameManager.Instance.firstPlayer = puMsg.player.id;
@@ -81,6 +83,7 @@ public class NetworkClient : MonoBehaviour
                     {
                         UpdatePlayerInfos(GameManager.Instance.totalPlayers[2], puMsg);
                     }
+                }
                 GameManager.Instance.roomNumbers = puMsg.player.matchedRooms;
                 //Debug.Log("PlayerID : " + puMsg.player.id + " : " + puMsg.player.totalNum);
                 break;
@@ -150,6 +153,7 @@ public class NetworkClient : MonoBehaviour
             m.player.firstNum = GameManager.Instance.firstNum;
             m.player.secondNum = GameManager.Instance.secondNum;
             m.player.thirdNum = GameManager.Instance.thirdNum;
+            m.player.roomID = GameManager.Instance.gameRoomID;
             SendToServer(JsonUtility.ToJson(m));
         }
     }
