@@ -80,17 +80,17 @@ public class NetworkClient : MonoBehaviour
                         GameManager.Instance.totalPlayers.Add(new Player(puMsg.player.id, puMsg.player.firstNum, puMsg.player.secondNum, puMsg.player.thirdNum, puMsg.player.totalNum, puMsg.player.roomID, puMsg.player.ready));
                     }
 
-                    if (GameManager.Instance.totalPlayers.Count > 0 && readyCheck)//added readycheck
+                    if (GameManager.Instance.totalPlayers.Count > 0 )
                     {
                         UpdatePlayerInfos(GameManager.Instance.totalPlayers[0], puMsg);
                     }
 
-                    if (GameManager.Instance.totalPlayers.Count > 1 && readyCheck)//added readycheck
+                    if (GameManager.Instance.totalPlayers.Count > 1 )
                     {
                         UpdatePlayerInfos(GameManager.Instance.totalPlayers[1], puMsg);
                     }
 
-                    if (GameManager.Instance.totalPlayers.Count > 2 && readyCheck)//added readycheck
+                    if (GameManager.Instance.totalPlayers.Count > 2 )
                     {
                         UpdatePlayerInfos(GameManager.Instance.totalPlayers[2], puMsg);
                     }
@@ -106,6 +106,7 @@ public class NetworkClient : MonoBehaviour
             case Commands.PLAYERS_READY:
             PlayersReadyMsg prMsg = JsonUtility.FromJson<PlayersReadyMsg>(recMsg);
             readyCheck = true;
+                Debug.Log("I am ready");
             break;
             default:
             Debug.Log("Unrecognized message received!");
@@ -161,7 +162,7 @@ public class NetworkClient : MonoBehaviour
             cmd = m_Connection.PopEvent(m_Driver, out stream);
 
         }   
-        if(sendInfo)
+        if(sendInfo && readyCheck)
         {
             PlayerUpdateMsg m = new PlayerUpdateMsg();
             m.player.totalNum = GameManager.Instance.total;

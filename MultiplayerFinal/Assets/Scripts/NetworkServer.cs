@@ -81,6 +81,7 @@ public class NetworkServer : MonoBehaviour
                 if(m.player.ready == true)
                 {
                     numberOfReadyPlayers++;
+                    Debug.Log("player says he's ready");
                 }
                 //
 
@@ -156,6 +157,8 @@ public class NetworkServer : MonoBehaviour
         //Ivan's edits
         if(numberOfReadyPlayers == m_Connections.Capacity)
         {
+            
+            Debug.Log("all players are ready");
             PlayersReadyMsg m = new PlayersReadyMsg();
             foreach (NetworkConnection tempC in m_Connections)
             {
