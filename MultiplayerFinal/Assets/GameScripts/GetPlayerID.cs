@@ -20,7 +20,7 @@ public class GetPlayerID : MonoBehaviour
         if (inputField.text != null)
         {
             GameManager.Instance.playerID = int.Parse(inputField.text);
-            SceneManager.LoadScene("ClientScene");
+            SceneManager.LoadScene("ClientScene");  
         }
 
     }

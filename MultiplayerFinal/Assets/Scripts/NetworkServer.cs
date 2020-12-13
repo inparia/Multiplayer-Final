@@ -9,6 +9,9 @@ using System.Collections.Generic;
 
 public class NetworkServer : MonoBehaviour
 {
+    //Ivan's Edits
+    int numberOfReadyPlayers = 0;
+    //
     public NetworkDriver m_Driver;
     public ushort serverPort;
     private NativeList<NetworkConnection> m_Connections;
@@ -72,6 +75,15 @@ public class NetworkServer : MonoBehaviour
                 m.player.id = puMsg.player.id;
                 m.player.matchedRooms = matchedRooms;
                 m.player.roomID = puMsg.player.roomID;
+                m.player.ready = puMsg.player.ready;
+
+                //Ivan's edits
+                if(m.player.ready == true)
+                {
+                    numberOfReadyPlayers++;
+                }
+                //
+
                 foreach (NetworkConnection tempC in m_Connections)
                 {
                     SendToClient(JsonUtility.ToJson(m), tempC);
@@ -141,7 +153,18 @@ public class NetworkServer : MonoBehaviour
 
             
         }
-        
+        //Ivan's edits
+        if(numberOfReadyPlayers == m_Connections.Capacity)
+        {
+            PlayersReadyMsg m = new PlayersReadyMsg();
+            foreach (NetworkConnection tempC in m_Connections)
+            {
+                SendToClient(JsonUtility.ToJson(m), tempC);
+            }
+            //tell all the players that it's over
+        }
+        //
 
     }
+
 }

@@ -9,7 +9,8 @@ namespace NetworkMessages
         ROOM_UPDATE,
         SERVER_UPDATE,
         HANDSHAKE,
-        PLAYER_INPUT
+        PLAYER_INPUT,
+        PLAYERS_READY
     }
 
     [System.Serializable]
@@ -50,6 +51,17 @@ namespace NetworkMessages
             players = new List<NetworkObjects.NetworkPlayer>();
         }
     }
+    //Ivan's edits
+    [System.Serializable]
+    public class PlayersReadyMsg: NetworkHeader
+    {
+        public PlayersReadyMsg()
+        {
+            cmd = Commands.PLAYERS_READY;
+        }
+    }
+    //
+
 } 
 
 namespace NetworkObjects
@@ -64,7 +76,7 @@ namespace NetworkObjects
     public class NetworkPlayer : NetworkObject{
         public int totalNum;
         public int firstNum, secondNum, thirdNum;
-
+        public bool ready;
         public NetworkPlayer(){
 
         }

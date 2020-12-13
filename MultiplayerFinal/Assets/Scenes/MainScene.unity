@@ -157,6 +157,12 @@ MonoBehaviour:
   thirdNum: 0
   total: 0
   playerID: 0
+  totalPlayers: []
+  firstPlayer: 
+  secondPlayer: 
+  thirdPlayer: 
+  gameRoomID: 0
+  roomNumbers: 
 --- !u!4 &22464972
 Transform:
   m_ObjectHideFlags: 0

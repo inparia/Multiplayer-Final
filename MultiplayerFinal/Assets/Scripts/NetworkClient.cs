@@ -9,7 +9,13 @@ using System.Text;
 
 public class NetworkClient : MonoBehaviour
 {
-    
+    // Ivan's edits
+    /// <summary>
+    /// this variable needed to confirm that all numbers are submitted 
+    public bool readyCheck; 
+    /// </summary>
+
+
 
     public NetworkDriver m_Driver;
     public NetworkConnection m_Connection;
@@ -23,6 +29,11 @@ public class NetworkClient : MonoBehaviour
         var endpoint = NetworkEndPoint.Parse(serverIP,serverPort);
         m_Connection = m_Driver.Connect(endpoint);
         sendInfo = false;
+
+        //
+        readyCheck = false;
+        //
+
         //t = GameObject.Find("Cube");
     }
     
@@ -61,26 +72,25 @@ public class NetworkClient : MonoBehaviour
                     if (puMsg.player.id != GameManager.Instance.playerID.ToString() && string.IsNullOrEmpty(GameManager.Instance.firstPlayer))
                     {
                         GameManager.Instance.firstPlayer = puMsg.player.id;
-                        GameManager.Instance.totalPlayers.Add(new Player(puMsg.player.id, puMsg.player.firstNum, puMsg.player.secondNum, puMsg.player.thirdNum, puMsg.player.totalNum, puMsg.player.roomID));
-
+                        GameManager.Instance.totalPlayers.Add(new Player(puMsg.player.id, puMsg.player.firstNum, puMsg.player.secondNum, puMsg.player.thirdNum, puMsg.player.totalNum, puMsg.player.roomID, puMsg.player.ready));
                     }
                     if (puMsg.player.id != GameManager.Instance.playerID.ToString() && puMsg.player.id != GameManager.Instance.firstPlayer && !string.IsNullOrEmpty(GameManager.Instance.firstPlayer) && string.IsNullOrEmpty(GameManager.Instance.secondPlayer))
                     {
                         GameManager.Instance.secondPlayer = puMsg.player.id;
-                        GameManager.Instance.totalPlayers.Add(new Player(puMsg.player.id, puMsg.player.firstNum, puMsg.player.secondNum, puMsg.player.thirdNum, puMsg.player.totalNum, puMsg.player.roomID));
+                        GameManager.Instance.totalPlayers.Add(new Player(puMsg.player.id, puMsg.player.firstNum, puMsg.player.secondNum, puMsg.player.thirdNum, puMsg.player.totalNum, puMsg.player.roomID, puMsg.player.ready));
                     }
 
-                    if (GameManager.Instance.totalPlayers.Count > 0)
+                    if (GameManager.Instance.totalPlayers.Count > 0 && readyCheck)//added readycheck
                     {
                         UpdatePlayerInfos(GameManager.Instance.totalPlayers[0], puMsg);
                     }
 
-                    if (GameManager.Instance.totalPlayers.Count > 1)
+                    if (GameManager.Instance.totalPlayers.Count > 1 && readyCheck)//added readycheck
                     {
                         UpdatePlayerInfos(GameManager.Instance.totalPlayers[1], puMsg);
                     }
 
-                    if (GameManager.Instance.totalPlayers.Count > 2)
+                    if (GameManager.Instance.totalPlayers.Count > 2 && readyCheck)//added readycheck
                     {
                         UpdatePlayerInfos(GameManager.Instance.totalPlayers[2], puMsg);
                     }
@@ -91,6 +101,11 @@ public class NetworkClient : MonoBehaviour
             case Commands.SERVER_UPDATE:
             ServerUpdateMsg suMsg = JsonUtility.FromJson<ServerUpdateMsg>(recMsg);
             Debug.Log("Server update message received!");
+            break;
+
+            case Commands.PLAYERS_READY:
+            PlayersReadyMsg prMsg = JsonUtility.FromJson<PlayersReadyMsg>(recMsg);
+            readyCheck = true;
             break;
             default:
             Debug.Log("Unrecognized message received!");
@@ -145,8 +160,8 @@ public class NetworkClient : MonoBehaviour
 
             cmd = m_Connection.PopEvent(m_Driver, out stream);
 
-        }
-       if(sendInfo)
+        }   
+        if(sendInfo)
         {
             PlayerUpdateMsg m = new PlayerUpdateMsg();
             m.player.totalNum = GameManager.Instance.total;
@@ -155,8 +170,10 @@ public class NetworkClient : MonoBehaviour
             m.player.secondNum = GameManager.Instance.secondNum;
             m.player.thirdNum = GameManager.Instance.thirdNum;
             m.player.roomID = GameManager.Instance.gameRoomID;
+            m.player.ready = GameManager.Instance.ready;
             SendToServer(JsonUtility.ToJson(m));
         }
+        
     }
 
     void UpdatePlayerInfos(Player tempP, PlayerUpdateMsg puMsg)
@@ -166,4 +183,5 @@ public class NetworkClient : MonoBehaviour
             tempP.totalNum = puMsg.player.totalNum;
         }
     }
+
 }

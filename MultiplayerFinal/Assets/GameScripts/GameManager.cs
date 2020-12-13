@@ -34,6 +34,9 @@ public class GameManager : MonoBehaviour
 
     #endregion
     public int firstNum = 0, secondNum = 0, thirdNum = 0, total = 0;
+    //Ivan's edits
+    public bool ready = false;
+    //
     public int playerID = 0;
     public List<Player> totalPlayers = new List<Player>();
     public Dictionary<int, int> numPlayers = new Dictionary<int, int>();
