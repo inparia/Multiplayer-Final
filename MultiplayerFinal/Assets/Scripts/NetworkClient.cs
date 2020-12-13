@@ -12,7 +12,8 @@ public class NetworkClient : MonoBehaviour
     // Ivan's edits
     /// <summary>
     /// this variable needed to confirm that all numbers are submitted 
-    public bool readyCheck; 
+    public bool readyCheck;
+    public int numOfReadyPlayers = 0;
     /// </summary>
 
 
@@ -71,13 +72,27 @@ public class NetworkClient : MonoBehaviour
                 {
                     if (puMsg.player.id != GameManager.Instance.playerID.ToString() && string.IsNullOrEmpty(GameManager.Instance.firstPlayer))
                     {
+                        
                         GameManager.Instance.firstPlayer = puMsg.player.id;
+                        
                         GameManager.Instance.totalPlayers.Add(new Player(puMsg.player.id, puMsg.player.firstNum, puMsg.player.secondNum, puMsg.player.thirdNum, puMsg.player.totalNum, puMsg.player.roomID, puMsg.player.ready));
+                        Debug.Log("asdqwe");
+                        if (puMsg.player.ready == true)
+                        {
+                            numOfReadyPlayers++;
+                        }
+                        
                     }
                     if (puMsg.player.id != GameManager.Instance.playerID.ToString() && puMsg.player.id != GameManager.Instance.firstPlayer && !string.IsNullOrEmpty(GameManager.Instance.firstPlayer) && string.IsNullOrEmpty(GameManager.Instance.secondPlayer))
                     {
                         GameManager.Instance.secondPlayer = puMsg.player.id;
+                      
                         GameManager.Instance.totalPlayers.Add(new Player(puMsg.player.id, puMsg.player.firstNum, puMsg.player.secondNum, puMsg.player.thirdNum, puMsg.player.totalNum, puMsg.player.roomID, puMsg.player.ready));
+                        Debug.Log("asdqwe");
+                        if (puMsg.player.ready == true)
+                        {
+                            numOfReadyPlayers++;
+                        }
                     }
 
                     if (GameManager.Instance.totalPlayers.Count > 0 )
@@ -161,15 +176,24 @@ public class NetworkClient : MonoBehaviour
 
             cmd = m_Connection.PopEvent(m_Driver, out stream);
 
-        }   
-        if(sendInfo && readyCheck)
+        }
+ 
+
+        if(sendInfo)
         {
             PlayerUpdateMsg m = new PlayerUpdateMsg();
-            m.player.totalNum = GameManager.Instance.total;
+            
             m.player.id = GameManager.Instance.playerID.ToString();
-            m.player.firstNum = GameManager.Instance.firstNum;
-            m.player.secondNum = GameManager.Instance.secondNum;
-            m.player.thirdNum = GameManager.Instance.thirdNum;
+            if(numOfReadyPlayers == 2)
+            {
+                m.player.totalNum = GameManager.Instance.total;
+                m.player.firstNum = GameManager.Instance.firstNum;
+                m.player.secondNum = GameManager.Instance.secondNum;
+                m.player.thirdNum = GameManager.Instance.thirdNum;
+            }
+
+
+
             m.player.roomID = GameManager.Instance.gameRoomID;
             m.player.ready = GameManager.Instance.ready;
             SendToServer(JsonUtility.ToJson(m));

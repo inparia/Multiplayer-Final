@@ -634,6 +634,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   readyCheck: 0
+  numOfReadyPlayers: 0
   serverIP: 18.217.212.10
   serverPort: 12345
 --- !u!4 &591268348

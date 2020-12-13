@@ -13,6 +13,7 @@ public class EnterRoom : MonoBehaviour
         switch (roomNumber)
         {
             case 1:
+                Debug.Log("trying to enter room one");
                 GameManager.Instance.gameRoomID = GameManager.Instance.roomNumbers[0];
                 gamePanel.SetActive(true);
                 matchroomPanel.SetActive(false);

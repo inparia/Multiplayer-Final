@@ -9,9 +9,7 @@ using System.Collections.Generic;
 
 public class NetworkServer : MonoBehaviour
 {
-    //Ivan's Edits
-    int numberOfReadyPlayers = 0;
-    //
+ 
     public NetworkDriver m_Driver;
     public ushort serverPort;
     private NativeList<NetworkConnection> m_Connections;
@@ -77,13 +75,11 @@ public class NetworkServer : MonoBehaviour
                 m.player.roomID = puMsg.player.roomID;
                 m.player.ready = puMsg.player.ready;
 
+
+
                 //Ivan's edits
-                if(m.player.ready == true)
-                {
-                    numberOfReadyPlayers++;
-                    Debug.Log("player says he's ready");
-                }
                 //
+
 
                 foreach (NetworkConnection tempC in m_Connections)
                 {
@@ -93,7 +89,8 @@ public class NetworkServer : MonoBehaviour
             case Commands.SERVER_UPDATE:
             ServerUpdateMsg suMsg = JsonUtility.FromJson<ServerUpdateMsg>(recMsg);
             Debug.Log("Server update message received!");
-            break;
+
+                break;
             default:
             Debug.Log("SERVER ERROR: Unrecognized message received!");
             break;
@@ -155,18 +152,18 @@ public class NetworkServer : MonoBehaviour
             
         }
         //Ivan's edits
-        if(numberOfReadyPlayers == m_Connections.Capacity)
-        {
-            
-            Debug.Log("all players are ready");
-            PlayersReadyMsg m = new PlayersReadyMsg();
-            foreach (NetworkConnection tempC in m_Connections)
-            {
-                SendToClient(JsonUtility.ToJson(m), tempC);
-            }
-            //tell all the players that it's over
-        }
-        //
+       // if(numberOfReadyPlayers == 3)
+       // {
+       //     
+       //     Debug.Log("all players are ready");
+       //     PlayersReadyMsg m = new PlayersReadyMsg();
+       //     foreach (NetworkConnection tempC in m_Connections)
+       //     {
+       //         SendToClient(JsonUtility.ToJson(m), tempC);
+       //     }
+       //     //tell all the players that it's over
+       // }
+       // //
 
     }
 
