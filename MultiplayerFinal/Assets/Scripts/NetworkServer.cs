@@ -26,11 +26,10 @@ public class NetworkServer : MonoBehaviour
 
         m_Connections = new NativeList<NetworkConnection>(16, Allocator.Persistent);
 
-        for(int i = 0; i < 4; i++)
-        {
-            matchedRooms.Add((i + 1) * 1111);
-        }
-        
+        matchedRooms.Add(1111);
+        matchedRooms.Add(2222);
+        matchedRooms.Add(3333);
+        matchedRooms.Add(4444);
     }
 
     void SendToClient(string message, NetworkConnection c){

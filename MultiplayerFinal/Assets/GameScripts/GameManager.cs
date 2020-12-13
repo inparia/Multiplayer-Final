@@ -39,15 +39,15 @@ public class GameManager : MonoBehaviour
     //
     public int playerID = 0;
     public List<Player> totalPlayers = new List<Player>();
-    public Dictionary<int, int> numPlayers = new Dictionary<int, int>();
     public string firstPlayer, secondPlayer, thirdPlayer;
     public int gameRoomID;
     public List<int> roomNumbers;
     // Update is called once per frame
 
+
     public void Update()
     {
-        total = firstNum + secondNum + thirdNum;
 
+        total = firstNum + secondNum + thirdNum;
     }
 }

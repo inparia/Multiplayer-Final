@@ -67,13 +67,13 @@ public class NetworkClient : MonoBehaviour
                 break;
             case Commands.PLAYER_UPDATE:
             PlayerUpdateMsg puMsg = JsonUtility.FromJson<PlayerUpdateMsg>(recMsg);
-               
                 if (GameManager.Instance.gameRoomID == puMsg.player.roomID && GameManager.Instance.gameRoomID != 0 && puMsg.player.roomID != 0)
                 {
                     if (puMsg.player.id != GameManager.Instance.playerID.ToString() && string.IsNullOrEmpty(GameManager.Instance.firstPlayer))
                     {
                         
                         GameManager.Instance.firstPlayer = puMsg.player.id;
+<<<<<<< HEAD
                         
                         GameManager.Instance.totalPlayers.Add(new Player(puMsg.player.id, puMsg.player.firstNum, puMsg.player.secondNum, puMsg.player.thirdNum, puMsg.player.totalNum, puMsg.player.roomID, puMsg.player.ready));
                         Debug.Log("asdqwe");
@@ -82,10 +82,15 @@ public class NetworkClient : MonoBehaviour
                             numOfReadyPlayers++;
                         }
                         
+=======
+                        GameManager.Instance.totalPlayers.Add(new Player(puMsg.player.id, puMsg.player.firstNum, puMsg.player.secondNum, puMsg.player.thirdNum, puMsg.player.totalNum));
+
+>>>>>>> parent of f5f9564... Rollback
                     }
                     if (puMsg.player.id != GameManager.Instance.playerID.ToString() && puMsg.player.id != GameManager.Instance.firstPlayer && !string.IsNullOrEmpty(GameManager.Instance.firstPlayer) && string.IsNullOrEmpty(GameManager.Instance.secondPlayer))
                     {
                         GameManager.Instance.secondPlayer = puMsg.player.id;
+<<<<<<< HEAD
                       
                         GameManager.Instance.totalPlayers.Add(new Player(puMsg.player.id, puMsg.player.firstNum, puMsg.player.secondNum, puMsg.player.thirdNum, puMsg.player.totalNum, puMsg.player.roomID, puMsg.player.ready));
                         Debug.Log("asdqwe");
@@ -93,6 +98,9 @@ public class NetworkClient : MonoBehaviour
                         {
                             numOfReadyPlayers++;
                         }
+=======
+                        GameManager.Instance.totalPlayers.Add(new Player(puMsg.player.id, puMsg.player.firstNum, puMsg.player.secondNum, puMsg.player.thirdNum, puMsg.player.totalNum));
+>>>>>>> parent of f5f9564... Rollback
                     }
 
                     if (GameManager.Instance.totalPlayers.Count > 0 )
