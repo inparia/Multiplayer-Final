@@ -150,19 +150,7 @@ public class NetworkServer : MonoBehaviour
 
             
         }
-        //Ivan's edits
-       // if(numberOfReadyPlayers == 3)
-       // {
-       //     
-       //     Debug.Log("all players are ready");
-       //     PlayersReadyMsg m = new PlayersReadyMsg();
-       //     foreach (NetworkConnection tempC in m_Connections)
-       //     {
-       //         SendToClient(JsonUtility.ToJson(m), tempC);
-       //     }
-       //     //tell all the players that it's over
-       // }
-       // //
+
 
     }
 

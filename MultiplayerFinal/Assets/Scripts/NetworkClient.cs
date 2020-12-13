@@ -73,34 +73,17 @@ public class NetworkClient : MonoBehaviour
                     {
                         
                         GameManager.Instance.firstPlayer = puMsg.player.id;
-<<<<<<< HEAD
                         
                         GameManager.Instance.totalPlayers.Add(new Player(puMsg.player.id, puMsg.player.firstNum, puMsg.player.secondNum, puMsg.player.thirdNum, puMsg.player.totalNum, puMsg.player.roomID, puMsg.player.ready));
-                        Debug.Log("asdqwe");
-                        if (puMsg.player.ready == true)
-                        {
-                            numOfReadyPlayers++;
-                        }
+       
                         
-=======
-                        GameManager.Instance.totalPlayers.Add(new Player(puMsg.player.id, puMsg.player.firstNum, puMsg.player.secondNum, puMsg.player.thirdNum, puMsg.player.totalNum));
-
->>>>>>> parent of f5f9564... Rollback
                     }
                     if (puMsg.player.id != GameManager.Instance.playerID.ToString() && puMsg.player.id != GameManager.Instance.firstPlayer && !string.IsNullOrEmpty(GameManager.Instance.firstPlayer) && string.IsNullOrEmpty(GameManager.Instance.secondPlayer))
                     {
                         GameManager.Instance.secondPlayer = puMsg.player.id;
-<<<<<<< HEAD
                       
                         GameManager.Instance.totalPlayers.Add(new Player(puMsg.player.id, puMsg.player.firstNum, puMsg.player.secondNum, puMsg.player.thirdNum, puMsg.player.totalNum, puMsg.player.roomID, puMsg.player.ready));
-                        Debug.Log("asdqwe");
-                        if (puMsg.player.ready == true)
-                        {
-                            numOfReadyPlayers++;
-                        }
-=======
-                        GameManager.Instance.totalPlayers.Add(new Player(puMsg.player.id, puMsg.player.firstNum, puMsg.player.secondNum, puMsg.player.thirdNum, puMsg.player.totalNum));
->>>>>>> parent of f5f9564... Rollback
+               
                     }
 
                     if (GameManager.Instance.totalPlayers.Count > 0 )
@@ -128,8 +111,6 @@ public class NetworkClient : MonoBehaviour
 
             case Commands.PLAYERS_READY:
             PlayersReadyMsg prMsg = JsonUtility.FromJson<PlayersReadyMsg>(recMsg);
-            readyCheck = true;
-                Debug.Log("I am ready");
             break;
             default:
             Debug.Log("Unrecognized message received!");
@@ -191,14 +172,12 @@ public class NetworkClient : MonoBehaviour
         {
             PlayerUpdateMsg m = new PlayerUpdateMsg();
             
-            m.player.id = GameManager.Instance.playerID.ToString();
-            if(numOfReadyPlayers == 2)
-            {
+                 m.player.id = GameManager.Instance.playerID.ToString();
                 m.player.totalNum = GameManager.Instance.total;
                 m.player.firstNum = GameManager.Instance.firstNum;
                 m.player.secondNum = GameManager.Instance.secondNum;
                 m.player.thirdNum = GameManager.Instance.thirdNum;
-            }
+            
 
 
 
