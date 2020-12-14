@@ -5,16 +5,13 @@ using NetworkMessages;
 using NetworkObjects;
 using System;
 using System.Text;
-
+using UnityEngine.UI;
 
 public class NetworkClient : MonoBehaviour
 {
-    // Ivan's edits
-    /// <summary>
-    /// this variable needed to confirm that all numbers are submitted 
-    public bool readyCheck;
-    public int numOfReadyPlayers = 0;
-    /// </summary>
+    //game pver stuff
+    public Text gameOverText;
+    //
 
 
 
@@ -23,19 +20,21 @@ public class NetworkClient : MonoBehaviour
     public string serverIP;
     public ushort serverPort;
     private bool sendInfo;
+    //
+  
+    //
     void Start ()
     {
+        //
+        gameOverText.gameObject.SetActive(false);
+        //
+
         m_Driver = NetworkDriver.Create();
         m_Connection = default(NetworkConnection);
         var endpoint = NetworkEndPoint.Parse(serverIP,serverPort);
         m_Connection = m_Driver.Connect(endpoint);
         sendInfo = false;
 
-        //
-        readyCheck = false;
-        //
-
-        //t = GameObject.Find("Cube");
     }
     
     void SendToServer(string message){
@@ -171,18 +170,13 @@ public class NetworkClient : MonoBehaviour
         if(sendInfo)
         {
             PlayerUpdateMsg m = new PlayerUpdateMsg();
-            
-                 m.player.id = GameManager.Instance.playerID.ToString();
-                m.player.totalNum = GameManager.Instance.total;
-                m.player.firstNum = GameManager.Instance.firstNum;
-                m.player.secondNum = GameManager.Instance.secondNum;
-                m.player.thirdNum = GameManager.Instance.thirdNum;
-            
-
-
-
-            m.player.roomID = GameManager.Instance.gameRoomID;
-            m.player.ready = GameManager.Instance.ready;
+            m.player.id =        GameManager.Instance.playerID.ToString();
+            m.player.totalNum =  GameManager.Instance.total;
+            m.player.firstNum =  GameManager.Instance.firstNum;
+            m.player.secondNum = GameManager.Instance.secondNum;
+            m.player.thirdNum =  GameManager.Instance.thirdNum;
+            m.player.roomID =    GameManager.Instance.gameRoomID;
+            m.player.ready =     GameManager.Instance.ready;
             SendToServer(JsonUtility.ToJson(m));
         }
         
@@ -190,10 +184,129 @@ public class NetworkClient : MonoBehaviour
 
     void UpdatePlayerInfos(Player tempP, PlayerUpdateMsg puMsg)
     {
+
+
         if (puMsg.player.id == tempP.playerID)
         {
-            tempP.totalNum = puMsg.player.totalNum;
+            tempP.b_ready = puMsg.player.ready;
+        }
+
+
+        if(GameManager.Instance.totalPlayers.Count == 1)
+        {
+            if (GameManager.Instance.ready && GameManager.Instance.totalPlayers[0].b_ready)
+            {
+                if (puMsg.player.id == tempP.playerID)
+                {
+                    tempP.totalNum = puMsg.player.totalNum;
+                    gameOverText.gameObject.SetActive(true);
+                    FindWinner();
+                }
+            }
+        }
+
+
+        if (GameManager.Instance.totalPlayers.Count == 2)
+        {
+            if (GameManager.Instance.ready && GameManager.Instance.totalPlayers[0].b_ready && GameManager.Instance.totalPlayers[1].b_ready)
+            {
+                if (puMsg.player.id == tempP.playerID)
+                {
+                    tempP.totalNum = puMsg.player.totalNum;
+                    gameOverText.gameObject.SetActive(true);
+                    FindWinner();
+                }
+            }
+        }
+
+        if (GameManager.Instance.totalPlayers.Count == 3)
+        {
+            if (GameManager.Instance.ready && GameManager.Instance.totalPlayers[0].b_ready && GameManager.Instance.totalPlayers[1].b_ready && GameManager.Instance.totalPlayers[2].b_ready)
+            {
+                if (puMsg.player.id == tempP.playerID)
+                {
+                    tempP.totalNum = puMsg.player.totalNum;
+                    gameOverText.gameObject.SetActive(true);
+                    FindWinner();
+                }
+            }
         }
     }
 
+
+    void FindWinner()
+    {
+       // int tempMe = GameManager.Instance.total;
+       // int temp0 = GameManager.Instance.totalPlayers[0].totalNum;
+       // int temp1 = GameManager.Instance.totalPlayers[1].totalNum;
+       // int temp2 = GameManager.Instance.totalPlayers[2].totalNum;
+        Player tempWinner = null;
+        bool moreThan1winner = false;
+
+        if (GameManager.Instance.totalPlayers.Count < 2)
+        {
+            if (GameManager.Instance.total > GameManager.Instance.totalPlayers[0].totalNum)     
+            {
+                moreThan1winner = false;
+               // gameOverText.text = "Winner is: " + GameManager.Instance.playerID.ToString();
+                gameOverText.text = GameManager.Instance.playerID.ToString();
+            }
+            else if (GameManager.Instance.total == GameManager.Instance.totalPlayers[0].totalNum)
+            {
+                gameOverText.text = "It's a tie";
+                moreThan1winner = true;
+            }
+            else
+            {
+                moreThan1winner = false;
+               // gameOverText.text = "Winner is: " + GameManager.Instance.totalPlayers[0].playerID.ToString();
+                gameOverText.text =GameManager.Instance.totalPlayers[0].playerID;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < GameManager.Instance.totalPlayers.Count; i++)
+            {
+                if(i == 0)
+                {
+                    if (GameManager.Instance.totalPlayers[i].totalNum > GameManager.Instance.totalPlayers[i + 1].totalNum)
+                    {
+                        tempWinner = GameManager.Instance.totalPlayers[i];
+                        moreThan1winner = false;
+                    }
+                    else if(GameManager.Instance.totalPlayers[i].totalNum < GameManager.Instance.totalPlayers[i + 1].totalNum)
+                    {
+                        tempWinner = GameManager.Instance.totalPlayers[i + 1];
+                        moreThan1winner = false;
+                    }
+                    else
+                    {
+                        tempWinner = GameManager.Instance.totalPlayers[i];
+                        moreThan1winner = true;
+                    }
+                }
+                else if (tempWinner.totalNum < GameManager.Instance.totalPlayers[i].totalNum)
+                {
+                    tempWinner = GameManager.Instance.totalPlayers[i];
+                    moreThan1winner = false;
+                }
+            }
+            if (GameManager.Instance.total > tempWinner.totalNum)
+            {
+                moreThan1winner = false;
+                gameOverText.text = "Winner is: " + GameManager.Instance.playerID.ToString();
+            }
+            else if(GameManager.Instance.total < tempWinner.totalNum)
+            {
+                moreThan1winner = false;
+                gameOverText.text = "Winner is: " + tempWinner.playerID.ToString();
+            }
+            else if (moreThan1winner)
+            {
+                gameOverText.text = "It's more than one winner";
+            }
+
+        }
+
+    }
 }
